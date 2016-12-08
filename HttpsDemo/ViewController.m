@@ -361,12 +361,6 @@
         NSLog(@"请求失败：%@",error);
     }];
 }
-//get
--(void)getFile2
-{
-
-
-}
 
 //网络类型
 - (void)AFNetworkStatus{
