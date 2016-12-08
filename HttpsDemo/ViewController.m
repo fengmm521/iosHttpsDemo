@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "AppDelegate.h"
-#import "HttpsReqUtil.h"
 #import "AFNetworking.h"
 
 @implementation ViewController

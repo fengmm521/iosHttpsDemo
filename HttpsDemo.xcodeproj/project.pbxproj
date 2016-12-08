@@ -26,7 +26,6 @@
 		265F646515AABB28009C39F6 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 265F646415AABB28009C39F6 /* CFNetwork.framework */; };
 		265F646715AABB33009C39F6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 265F646615AABB33009C39F6 /* SystemConfiguration.framework */; };
 		265F646915AABB40009C39F6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 265F646815AABB40009C39F6 /* MobileCoreServices.framework */; };
-		265F646B15AABB54009C39F6 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 265F646A15AABB54009C39F6 /* libz.1.2.5.dylib */; };
 		265F648115ABFE7A009C39F6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 265F648015ABFE7A009C39F6 /* Security.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,7 +61,6 @@
 		265F646415AABB28009C39F6 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		265F646615AABB33009C39F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		265F646815AABB40009C39F6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		265F646A15AABB54009C39F6 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		265F648015ABFE7A009C39F6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -72,7 +70,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				265F648115ABFE7A009C39F6 /* Security.framework in Frameworks */,
-				265F646B15AABB54009C39F6 /* libz.1.2.5.dylib in Frameworks */,
 				265F646915AABB40009C39F6 /* MobileCoreServices.framework in Frameworks */,
 				265F646715AABB33009C39F6 /* SystemConfiguration.framework in Frameworks */,
 				265F646515AABB28009C39F6 /* CFNetwork.framework in Frameworks */,
@@ -110,7 +107,6 @@
 				265F646815AABB40009C39F6 /* MobileCoreServices.framework */,
 				265F646615AABB33009C39F6 /* SystemConfiguration.framework */,
 				265F646415AABB28009C39F6 /* CFNetwork.framework */,
-				265F646A15AABB54009C39F6 /* libz.1.2.5.dylib */,
 				265F642615AAB9A6009C39F6 /* UIKit.framework */,
 				265F642815AAB9A6009C39F6 /* Foundation.framework */,
 				265F642A15AAB9A6009C39F6 /* CoreGraphics.framework */,
