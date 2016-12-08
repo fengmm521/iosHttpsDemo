@@ -21,8 +21,11 @@
 @property (retain, nonatomic) IBOutlet UILabel *lbMessage;
 @property (retain, nonatomic) IBOutlet UIWebView *webView;
 @property (retain, nonatomic) IBOutlet UIButton *btGo;
+@property (retain, nonatomic) IBOutlet UIButton *btcPost;
+@property (readonly, nonatomic, strong) NSOperationQueue *operationQueue;
 
 - (IBAction)goAction:(id)sender;
+- (IBAction)postAction:(id)sender;
 - (void)_receiveDidStart;
 - (void)_receiveDidStopWithStatus:(NSString *)statusString;
 @end

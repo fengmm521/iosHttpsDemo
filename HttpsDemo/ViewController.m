@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import "AppDelegate.h"
+#import "HttpsReqUtil.h"
+#import "AFNetworking.h"
 
 @implementation ViewController
 @synthesize lbMessage;
@@ -66,7 +68,11 @@
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
-
+- (IBAction)postAction:(id)sender
+{
+    [self postFile];
+    //[self getFile2];
+}
 - (IBAction)goAction:(id)sender {
     filePath = [[AppDelegate sharedAppDelegate] pathForTemporaryFileWithPrefix:@"Get"];
     NSLog(@"filePath=%@",filePath);
@@ -164,8 +170,6 @@
 
 - (void)connection:(NSURLConnection *)conn didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    
-#if 1
     //忽略证书验证
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
         
@@ -174,18 +178,6 @@
         [[challenge sender]  continueWithoutCredentialForAuthenticationChallenge: challenge];
         
     }
-    //下边为不忽略证书
-#else
-    
-    _challenge = challenge;
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"服务器证书"
-                                                         message:@"这个网站有一个服务器证书，点击“接受”，继续访问该网站，如果你不确定，请点击“取消”。" 
-                                                        delegate:self 
-                                               cancelButtonTitle:@"接受" 
-                                               otherButtonTitles:@"取消", nil];
-    
-    [alertView show];
-#endif
 }
 
 - (void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
@@ -243,5 +235,181 @@
     
     [self _stopReceiveWithStatus:nil];
 }
+
+
+-(void)getRequest
+{
+    //1。创建管理者对象
+    NSString *urlString = @"https://127.0.0.1:4443/";
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    
+    [manager GET:@"" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    }
+         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+             
+             NSLog(@"这里打印请求成功要做的事");
+             
+         }
+     
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull   error) {
+             
+             NSLog(@"%@",error);  //这里打印错误信息
+             
+         }];
+}
+
+-(void) postRequest
+{
+    //1。创建管理者对象
+    NSString *urlString = @"https://127.0.0.1:4443/";
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+    //manager.securityPolicy = securityPolicy;
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    
+    NSMutableDictionary *parameters = (NSMutableDictionary*)@{@"":@"",@"":@""};
+    
+    [manager POST:@"" parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+}
+
+
+//下载文件
+
+- (void)downLoad{
+    
+    //1.创建管理者对象
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //2.确定请求的URL地址
+    NSURL *urltmp = [NSURL URLWithString:@""];
+    
+    //3.创建请求对象
+    NSURLRequest *request = [NSURLRequest requestWithURL:urltmp];
+    
+    //下载任务
+    NSURLSessionDownloadTask *task = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        //打印下下载进度
+        NSLog(@"%lf",1.0 * downloadProgress.completedUnitCount / downloadProgress.totalUnitCount);
+        
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        //下载地址
+        NSLog(@"默认下载地址:%@",targetPath);
+        
+        //设置下载路径，通过沙盒获取缓存地址，最后返回NSURL对象
+        NSString *pfilePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)lastObject];
+        return [NSURL URLWithString:pfilePath];
+        
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable pfilePath, NSError * _Nullable error) {
+        
+        //下载完成调用的方法
+        NSLog(@"下载完成：");
+        NSLog(@"%@--%@",response,pfilePath);
+        
+    }];
+    
+    //开始启动任务
+    [task resume];
+    
+}
+
+//post上传文件
+-(void)postFile
+{
+
+    //1。创建管理者对象
+    NSString *urlString = @"https://127.0.0.1:4443/";
+
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+    //manager.securityPolicy = securityPolicy;
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy.validatesDomainName = NO;
+    //2.上传文件
+    [manager POST:@"upload" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //上传文件参数
+        UIImage *iamge = [UIImage imageNamed:@"computer.png"];
+        NSData *data = UIImagePNGRepresentation(iamge);
+        //这个就是参数
+        [formData appendPartWithFileData:data name:@"file" fileName:@"computer.png" mimeType:@"image/png"];
+        
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+        //打印下上传进度
+        NSLog(@"%lf",1.0 *uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        //请求成功
+        NSLog(@"请求成功：%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        //请求失败
+        NSLog(@"请求失败：%@",error);
+    }];
+}
+//get
+-(void)getFile2
+{
+
+
+}
+
+//网络类型
+- (void)AFNetworkStatus{
+    
+    //1.创建网络监测者
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    
+    /*枚举里面四个状态  分别对应 未知 无网络 数据 WiFi
+     typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) {
+     AFNetworkReachabilityStatusUnknown          = -1,      未知
+     AFNetworkReachabilityStatusNotReachable     = 0,       无网络
+     AFNetworkReachabilityStatusReachableViaWWAN = 1,       蜂窝数据网络
+     AFNetworkReachabilityStatusReachableViaWiFi = 2,       WiFi
+     };
+     */
+    
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        //这里是监测到网络改变的block  可以写成switch方便
+        //在里面可以随便写事件
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:
+                NSLog(@"未知网络状态");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"无网络");
+                break;
+                
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"蜂窝数据网");
+                break;
+                
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"WiFi网络");
+                
+                break;
+                
+            default:
+                break;
+        }
+        
+    }] ;
+}
+
 
 @end

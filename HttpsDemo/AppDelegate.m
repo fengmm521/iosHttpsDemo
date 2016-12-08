@@ -10,6 +10,16 @@
 
 #import "ViewController.h"
 
+
+//@implementation NSURLRequest(DataController)
+//+ (BOOL)allowsAnyHTTPSCertificateForHost:(NSString *)host
+//{
+//    return YES;
+//}
+//@end
+
+
+
 @implementation AppDelegate
 
 @synthesize window = _window;
